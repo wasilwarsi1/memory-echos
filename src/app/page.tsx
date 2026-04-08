@@ -187,7 +187,8 @@ export default function Home() {
   // ── 6. React ─────────────────────────────────────────────────
   async function react(echoId: string) {
     if (reactedIds.has(echoId)) return
-    setReactedIds((prev) => new Set([...prev, echoId]))
+    setReactedIds((prev) => setReactedIds((prev) => { const next = new Set(prev); 
+next.add(echoId); return next; })
     await fetch(`/api/echoes/${echoId}/react`, { method: 'POST' })
     setEchoes((prev) =>
       prev.map((e) => e.id === echoId ? { ...e, reaction_count: (e.reaction_count ?? 0) + 1 } : e)
